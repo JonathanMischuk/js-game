@@ -11,13 +11,14 @@ const Start = () => {
 	const [, setActionsQueue] = useRecoilState(actionsQueueState);
 	const [, setParticipants] = useRecoilState(participantsState);
 
-	// start - events that happen only once
+	// start: events that happen only once
 	useEffect(() => {
 		const enemy = createUnit({ name: 'Kefka' });
-		const _player = createUnit({ speed: 4, name: 'Cecil', ai: false });
-		setPlayer(_player);
-		setActionsQueue(createActionsQueue([_player, enemy]));
-		setParticipants([_player, enemy]);
+		const player = createUnit({ speed: 4, name: 'Cecil', ai: false });
+
+		setPlayer(player);
+		setActionsQueue(createActionsQueue([player, enemy]));
+		setParticipants([player, enemy]);
 	}, []);
 
 	return (
