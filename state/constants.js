@@ -1,0 +1,4 @@
+export const SET_ACTIONS_QUEUE = 'SET_ACTIONS_QUEUE';
+export const SET_PLAYER = 'SET_PLAYER';
+export const SET_PARTICIPANTS = 'SET_PARTICIPANTS';
+export const SET_IN_BATTLE = 'SET_IN_BATTLE';
