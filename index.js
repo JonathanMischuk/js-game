@@ -1,12 +1,15 @@
 import React from 'react';
 import { render } from 'react-dom';
+import { Provider } from 'react-redux';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
+
+import { store } from './state';
 
 import Arena from './components/pages/Arena';
 import Start from './components/pages/Start';
 
-const App = () => {
+const Game = () => {
 	return (
 		<>
 			<div>Game</div>
@@ -20,10 +23,10 @@ const App = () => {
 };
 
 render(
-	<RecoilRoot>
+	<Provider store={store}>
 		<BrowserRouter>
-			<App />
+			<Game />
 		</BrowserRouter>
-	</RecoilRoot>,
+	</Provider>,
 	document.getElementById('root')
 );

@@ -1,24 +1,22 @@
 import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
 
+import { setPlayer, setActionsQueue, setParticipants, setInBattle } from '../../state/actions';
 import { createActionsQueue } from '../../actions';
 import { createUnit } from '../../units';
-import { playerState, actionsQueueState, participantsState } from '../../atoms';
 
 const Start = () => {
-	const [, setPlayer] = useRecoilState(playerState);
-	const [, setActionsQueue] = useRecoilState(actionsQueueState);
-	const [, setParticipants] = useRecoilState(participantsState);
+	const dispatch = useDispatch();
 
-	// start: events that happen only once
 	useEffect(() => {
 		const enemy = createUnit({ name: 'Kefka' });
 		const player = createUnit({ speed: 4, name: 'Cecil', ai: false });
 
-		setPlayer(player);
-		setActionsQueue(createActionsQueue([player, enemy]));
-		setParticipants([player, enemy]);
+		dispatch(setPlayer(player));
+		dispatch(setActionsQueue(createActionsQueue([player, enemy])));
+		dispatch(setParticipants([player, enemy]));
+		dispatch(setInBattle(true));
 	}, []);
 
 	return (

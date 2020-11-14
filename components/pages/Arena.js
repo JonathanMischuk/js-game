@@ -1,45 +1,34 @@
-import React, { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
-
-import { actionsQueueState, participantsState } from '../../atoms';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { NavLink, Redirect } from 'react-router-dom';
 
 import Stats from '../features/Stats';
 import ActionsPanel from '../features/ActionsPanel';
 
+const BattleUI = () => {
+	return (
+		<>
+			<ActionsPanel />
+			<Stats />
+		</>
+	);
+};
+
+const WinUI = () => {
+	const participants = useSelector((state) => state.participants);
+
+	return <>{participants[0].living ? <h1>You won!</h1> : <h1>You lost...</h1>}</>;
+};
+
 const Arena = () => {
-	const [inBattle, setInBattle] = useState(true);
-	const [actionsQueue, setActionsQueue] = useRecoilState(actionsQueueState);
-	const [participants, setParticipants] = useRecoilState(participantsState);
+	const inBattle = useSelector((state) => state.inBattle);
+	const participants = useSelector((state) => state.participants);
 
-	// useEffect(() => {
-	// 	if (actionsQueue.length > 0) {
-	// 		const current = participants[actionsQueue[0]];
-
-	// 		if (current.ai) {
-	// 			const results = current.actions.attack(participants, actionsQueue);
-
-	// 			setParticipants(results);
-	// 			setActionsQueue(updateActionsQueue(actionsQueue));
-
-	// 			if (!results[actionsQueue[1]].living) setInBattle(false);
-	// 		}
-	// 	}
-	// }, [actionsQueue]);
+	if (!participants.length) return <Redirect to="/" />;
 
 	return (
 		<>
-			{actionsQueue.length > 0 && inBattle && (
-				<ActionsPanel
-					actionsQueue={actionsQueue}
-					participants={participants}
-					setActionsQueue={setActionsQueue}
-					setParticipants={setParticipants}
-					setInBattle={setInBattle}
-				/>
-			)}
-
-			<Stats participants={participants} />
+			{inBattle ? <BattleUI /> : <WinUI />}
 
 			<NavLink exact to="/">
 				Reset

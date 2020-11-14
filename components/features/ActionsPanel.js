@@ -1,43 +1,37 @@
-import React, { useEffect } from 'react';
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
+import { setActionsQueue, setParticipants, setInBattle } from '../../state/actions';
 import { updateActionsQueue } from '../../actions';
 import Button from '../ui/Button';
 
-const ActionsPanel = ({
-	actionsQueue,
-	participants,
-	setActionsQueue,
-	setParticipants,
-	setInBattle,
-}) => {
-	const current = participants[actionsQueue[0]];
+const ActionsPanel = () => {
+	const dispatch = useDispatch();
+	const actionsQueue = useSelector((state) => state.actionsQueue);
+	const participants = useSelector((state) => state.participants);
 
-	// if (current.ai) {
-	// 	const results = current.actions.attack(participants, actionsQueue);
+	if (actionsQueue.length > 0) {
+		const current = participants[actionsQueue[0]];
 
-	// 	setParticipants(results);
-	// 	setActionsQueue(updateActionsQueue(actionsQueue));
+		return Object.keys(current.actions).map((action) => {
+			const onClick = () => {
+				const results = current.actions[action](participants, actionsQueue);
 
-	// 	if (!results[actionsQueue[1]].living) setInBattle(false);
-	// 	return null;
-	// }
+				dispatch(setParticipants(results));
+				dispatch(setActionsQueue(updateActionsQueue(actionsQueue)));
 
-	return Object.keys(current.actions).map((action) => {
-		const onClick = () => {
-			const results = current.actions[action](participants, actionsQueue);
+				if (!results[actionsQueue[1]].living) dispatch(setInBattle(false));
+			};
 
-			setParticipants(results);
-			setActionsQueue(updateActionsQueue(actionsQueue));
+			return (
+				<Button onClick={onClick} key={action}>
+					{action}
+				</Button>
+			);
+		});
+	}
 
-			if (!results[actionsQueue[1]].living) setInBattle(false);
-		};
-
-		return (
-			<Button onClick={onClick} key={action}>
-				{action}
-			</Button>
-		);
-	});
+	return null;
 };
 
 export default ActionsPanel;

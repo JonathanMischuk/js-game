@@ -15,3 +15,8 @@ export const participantsState = atom({
 	key: 'participantsState',
 	default: [],
 });
+
+export const inBattleState = atom({
+	key: 'inBattleState',
+	default: false,
+});

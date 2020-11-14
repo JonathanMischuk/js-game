@@ -1,6 +1,9 @@
-import React from 'react'
+import React from 'react';
+import { useSelector } from 'react-redux';
 
-const Stats = ({ participants }) => {
+const Stats = () => {
+	const participants = useSelector((state) => state.participants);
+
 	return participants.map((participant) => {
 		return (
 			<div key={participant.name}>
