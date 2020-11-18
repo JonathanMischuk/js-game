@@ -12,3 +12,8 @@ export const attack = (participants, actionsQueue) => {
 		return participant;
 	});
 };
+
+const meta = {
+	name: 'attack',
+	action: attack,
+};
